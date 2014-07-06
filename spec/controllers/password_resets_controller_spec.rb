@@ -2,7 +2,7 @@ require 'rails_helper.rb'
 
 describe PasswordResetsController do
   describe "GET show" do
-    it "renders how template if token is valid" do
+    it "renders show template if token is valid" do
       joe = Fabricate(:user)
       joe.update_column(:token, '12345')
       get :show, id: '12345'
