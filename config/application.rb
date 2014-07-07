@@ -9,11 +9,13 @@ module Myflix
     config.encoding = "utf-8"
     config.filter_parameters += [:password]
     config.active_support.escape_html_entities_in_json = true
-
     config.assets.enabled = true
+
     config.generators do |g|
       g.orm :active_record
       g.template_engine :haml
     end
+
+    config.autoload_paths << "#{Rails.root}/lib"
   end
 end

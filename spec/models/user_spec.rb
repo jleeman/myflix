@@ -7,9 +7,8 @@ describe User do
   it { should have_many(:queue_items).order(:position) }
   it { should have_many(:reviews).order("created_at DESC") }
 
-  it "generates a random token when user is created" do
-    joe = Fabricate(:user)
-    expect(joe.token).to be_present
+  it_behaves_like "tokenable" do
+    let(:object) { Fabricate(:user) }
   end
 
   it "password must be greater than five characters" do
@@ -51,6 +50,21 @@ describe User do
       bob = Fabricate(:user)
       Fabricate(:relationship, leader: joe, follower: bob)
       expect(joe.follows?(bob)).to eq(false)
+    end
+  end
+
+  describe "#follow" do
+    it "follows another user" do
+      joe = Fabricate(:user)
+      bob = Fabricate(:user)
+      joe.follow(bob)
+      expect(joe.follows?(bob)).to eq(true)
+    end
+
+    it "does not follow oneself" do
+      joe = Fabricate(:user)
+      joe.follow(joe)
+      expect(joe.follows?(joe)).to eq(false)
     end
   end
 end
