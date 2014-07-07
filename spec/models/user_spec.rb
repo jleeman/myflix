@@ -53,4 +53,19 @@ describe User do
       expect(joe.follows?(bob)).to eq(false)
     end
   end
+
+  describe "#follow" do
+    it "follows another user" do
+      joe = Fabricate(:user)
+      bob = Fabricate(:user)
+      joe.follow(bob)
+      expect(joe.follows?(bob)).to eq(true)
+    end
+
+    it "does not follow oneself" do
+      joe = Fabricate(:user)
+      joe.follow(joe)
+      expect(joe.follows?(joe)).to eq(false)
+    end
+  end
 end
