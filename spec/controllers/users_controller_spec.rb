@@ -45,7 +45,7 @@ describe UsersController do
         joe = Fabricate(:user)
         invitation = Fabricate(:invitation, inviter: joe, recipient_email: "bob@test.com")
         post :create, user: { email: "bob@test.com", password: "password", full_name: "Bob Smith" }, invitation_token: invitation.token
-        expect(Invitation.first.token).to be_nil
+        expect(invitation.reload.token).to be_nil
       end
     end
 
