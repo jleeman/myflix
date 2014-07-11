@@ -9,7 +9,7 @@ before_filter :require_user
     # note use of merge here to associate foreign key of inviter id
     @invitation = Invitation.create(invitation_params.merge!(inviter_id: current_user.id))
     if @invitation.save
-      AppMailer.send_invitation(@invitation).deliver
+      AppMailer.delay.send_invitation(@invitation)
       flash[:success] = "You have successfully invited #{@invitation.recipient_name}!"
       redirect_to new_invitation_path
     else
