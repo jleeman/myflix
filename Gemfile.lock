@@ -55,6 +55,11 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    carrierwave (0.10.0)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
+      json (>= 1.7)
+      mime-types (>= 1.16)
     celluloid (0.15.2)
       timers (~> 1.1.0)
     coderay (1.1.0)
@@ -233,6 +238,7 @@ DEPENDENCIES
   bootstrap_form
   capybara
   capybara-email!
+  carrierwave
   coffee-rails
   fabrication
   faker

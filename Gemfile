@@ -15,6 +15,7 @@ gem 'sidekiq'
 gem 'unicorn'
 gem 'paratrooper'
 gem 'sentry-raven'
+gem 'carrierwave'
 
 group :development do
   gem 'sqlite3'
