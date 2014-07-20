@@ -15,6 +15,10 @@ gem 'sidekiq'
 gem 'unicorn'
 gem 'paratrooper'
 gem 'sentry-raven'
+gem 'carrierwave'
+gem 'fog'
+gem 'mini_magick'
+gem 'figaro'
 
 group :development do
   gem 'sqlite3'

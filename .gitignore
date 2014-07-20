@@ -13,3 +13,9 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore redis dump
+/dump.rdb
+
+# Ignore application configuration
+/config/application.yml
