@@ -1,6 +1,5 @@
 CarrierWave.configure do |config|
   if Rails.env.staging? || Rails.env.production?
-    Figaro.require("AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_BUCKET")
     config.storage = :fog
     config.fog_credentials = {
       :provider               => 'AWS',                        # required
