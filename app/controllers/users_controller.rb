@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       handle_invitation
+
       Stripe.api_key = ENV['STRIPE_SECRET_KEY']
       Stripe::Charge.create(
         :amount => 999,
@@ -16,8 +17,6 @@ class UsersController < ApplicationController
         :card => params[:stripeToken],
         :description => "MyFlix Subscription"
       )
-
-      Stripe.api_key = "sk_test_4RJy4KNnnymXTwu6ZRMpoYpz"
 
       AppMailer.send_welcome_email(@user).deliver
       session[:user_id] = @user.id
