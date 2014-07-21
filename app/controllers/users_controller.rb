@@ -9,9 +9,19 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       handle_invitation
+
+
+      Stripe.api_key = ENV['STRIPE_SECRET_KEY']
+      Stripe::Charge.create(
+        :amount => 999,
+        :currency => "usd",
+        :card => params[:stripeToken],
+        :description => "MyFlix Subscription"
+      )
+
       AppMailer.send_welcome_email(@user).deliver
       session[:user_id] = @user.id
-      flash[:notice] = "Welcome, #{@user.full_name}! You have successfully registered."
+      flash[:success] = "Welcome, #{@user.full_name}! You have successfully registered."
       redirect_to videos_path
     else
       render :new
