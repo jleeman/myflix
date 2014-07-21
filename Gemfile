@@ -19,6 +19,7 @@ gem 'carrierwave'
 gem 'fog'
 gem 'mini_magick'
 gem 'figaro'
+gem 'stripe'
 
 group :development do
   gem 'sqlite3'
