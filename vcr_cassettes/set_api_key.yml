@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/tokens
     body:
       encoding: US-ASCII
-      string: card[number]=4242424242424242&card[exp_month]=3&card[exp_year]=2018&card[cvc]=123
+      string: card[number]=4000000000000002&card[exp_month]=3&card[exp_year]=2018&card[cvc]=123
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -14,7 +14,7 @@ http_interactions:
       User-Agent:
       - Stripe/v1 RubyBindings/1.14.0
       Authorization:
-      - Bearer pk_test_4RJyeK2OO0YGftkt2tcCCtG3
+      - Bearer sk_test_4RJy4KNnnymXTwu6ZRMpoYpz
       Content-Type:
       - application/x-www-form-urlencoded
       X-Stripe-Client-User-Agent:
@@ -31,42 +31,42 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 21 Jul 2014 23:18:14 GMT
+      - Tue, 22 Jul 2014 00:37:17 GMT
       Content-Type:
       - application/json;charset=utf-8
       Content-Length:
       - '596'
-      Access-Control-Allow-Methods:
-      - GET, POST, HEAD, OPTIONS, DELETE
-      Access-Control-Max-Age:
-      - '300'
       Cache-Control:
       - no-cache, no-store
-      Access-Control-Allow-Credentials:
-      - 'true'
       Stripe-Version:
       - '2014-06-17'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Max-Age:
+      - '300'
       Strict-Transport-Security:
       - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_14Iq2s4P9PjYyYg2biieeKIk",
+          "id": "tok_14IrHN4P9PjYyYg2SWL1wE6o",
           "livemode": false,
-          "created": 1405984694,
+          "created": 1405989437,
           "used": false,
           "object": "token",
           "type": "card",
           "card": {
-            "id": "card_14Iq2s4P9PjYyYg2OoWbLnzB",
+            "id": "card_14IrHN4P9PjYyYg2mv9MCxif",
             "object": "card",
-            "last4": "4242",
+            "last4": "0002",
             "brand": "Visa",
             "funding": "credit",
             "exp_month": 3,
             "exp_year": 2018,
-            "fingerprint": "4yWzT11HwdFfDH85",
+            "fingerprint": "NIvbYUiPtLBcenbD",
             "country": "US",
             "name": null,
             "address_line1": null,
@@ -78,6 +78,6 @@ http_interactions:
             "customer": null
           }
         }
-    http_version:
-  recorded_at: Mon, 21 Jul 2014 23:18:14 GMT
+    http_version: 
+  recorded_at: Tue, 22 Jul 2014 00:37:18 GMT
 recorded_with: VCR 2.9.2

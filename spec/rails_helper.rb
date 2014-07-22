@@ -6,7 +6,8 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'capybara/email/rspec'
 require 'sidekiq/testing'
-# require 'vcr_setup'
+require 'vcr_setup'
+require 'webmock/rspec'
 Sidekiq::Testing.inline!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
