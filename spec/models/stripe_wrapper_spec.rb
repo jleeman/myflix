@@ -3,13 +3,10 @@ require 'rails_helper'
 describe StripeWrapper do
   describe StripeWrapper::Charge do
     before do
-      VCR.use_cassette('set api key') do
         StripeWrapper::Charge.set_api_key
-      end
     end
 
     let(:token) do
-      VCR.use_cassette('let token') do
         Stripe::Token.create(
           :card => {
             :number => card_number,
@@ -18,7 +15,6 @@ describe StripeWrapper do
             :cvc => 123
           }
         ).id
-      end
     end
 
     describe ".create" do
@@ -28,9 +24,7 @@ describe StripeWrapper do
       let(:card_number) { '4242424242424242' }
 
       it "charges the card successfully" do
-        VCR.use_cassette('create charge with valid card') do
-          response = StripeWrapper::Charge.create(amount: 300, card: token)
-        end
+        response = StripeWrapper::Charge.create(amount: 300, card: token)
         expect(response).to be_successful
       end
     end
@@ -40,9 +34,7 @@ describe StripeWrapper do
       let(:card_number) { '4000000000000002' }
 
       let(:response) do
-        VCR.use_cassette('create charge with invalid card') do
-          StripeWrapper::Charge.create(amount: 300, card: token)
-        end
+        StripeWrapper::Charge.create(amount: 300, card: token)
       end
 
       it "does not charge the card" do
@@ -50,7 +42,7 @@ describe StripeWrapper do
       end
 
       it "contains an error message" do
-        response.error_message.should == "Your card was declined."
+        expect(response.error_message).to eq("Your card was declined.")
       end
     end
   end
