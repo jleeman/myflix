@@ -10,6 +10,7 @@ class UsersController < ApplicationController
     if @user.save
       handle_invitation
 
+      StripeWrapper::Charge.set_api_key
       StripeWrapper::Charge.create(
         :amount => 999,
         :card => params[:stripeToken],

@@ -3,22 +3,20 @@ require 'rails_helper'
 describe StripeWrapper do
   describe StripeWrapper::Charge do
     before do
-      VCR.use_cassette('set api key', :record => :all) do
+      VCR.use_cassette('set api key') do
         StripeWrapper::Charge.set_api_key
       end
     end
 
     let(:token) do
-      VCR.use_cassette('set api key', :record => :all) do
-        Stripe::Token.create(
-          :card => {
-            :number => card_number,
-            :exp_month => 3,
-            :exp_year => 2018,
-            :cvc => 123
-          }
-        ).id
-      end
+      Stripe::Token.create(
+        :card => {
+          :number => card_number,
+          :exp_month => 3,
+          :exp_year => 2018,
+          :cvc => 123
+        }
+      ).id
     end
 
     context "with valid card" do
@@ -27,11 +25,10 @@ describe StripeWrapper do
       it "charges the card successfully" do
         VCR.use_cassette('create charge with valid card') do
           response = StripeWrapper::Charge.create(amount: 300, card: token)
+          expect(response).to be_successful
         end
-        expect(response).to be_successful
       end
     end
-
 
     context "with invalid card" do
       let(:card_number) { '4000000000000002' }
