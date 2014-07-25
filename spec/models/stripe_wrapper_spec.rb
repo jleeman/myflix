@@ -2,11 +2,6 @@ require 'rails_helper'
 
 describe StripeWrapper do
   describe StripeWrapper::Charge do
-    before do
-      VCR.use_cassette('set api key') do
-        StripeWrapper::Charge.set_api_key
-      end
-    end
 
     let(:token) do
       Stripe::Token.create(

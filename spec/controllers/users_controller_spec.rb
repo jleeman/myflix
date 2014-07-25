@@ -12,9 +12,11 @@ describe UsersController do
   describe "POST create" do
     let (:user) { Fabricate(:user) }
 
-    context "with valid input data" do
+    context "with valid personal info and valid card" do
+      let(:charge) { double(:charge, successful?: true) }
+
       before do
-        allow(StripeWrapper::Charge).to receive(:create)
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
         post :create, user: Fabricate.attributes_for(:user)
       end
 
@@ -50,7 +52,30 @@ describe UsersController do
       end
     end
 
-    context "with invalid input data" do
+    context "valid personal info and declined card" do
+      it "does not create new user record" do
+        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: '123123'
+        expect(User.count).to eq(0)
+      end
+
+      it "renders the new template" do
+        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: '123123'
+        expect(response).to render_template :new
+      end
+
+      it "sets the flash error message" do
+        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        post :create, user: Fabricate.attributes_for(:user), stripeToken: '123123'
+        expect(flash[:danger]).to be_present
+      end
+    end
+
+    context "with invalid personal info" do
       before do
         post :create, user: { password: "password", full_name: "Josh Leeman}" }
       end
@@ -66,11 +91,18 @@ describe UsersController do
       it "sets new @user" do
         expect(assigns(:user)).to be_instance_of(User)
       end
+
+      it "does not charge the card" do
+        expect(StripeWrapper::Charge).not_to receive(:create)
+        post :create, user: { email: "joshleeman@gmail.com" }
+      end
     end
 
     context "email sending" do
+      let(:charge) { double(:charge, successful?: true) }
+
       before do
-        allow(StripeWrapper::Charge).to receive(:create)
+        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
       end
 
       after { ActionMailer::Base.deliveries.clear }
