@@ -41,11 +41,12 @@ group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'capybara-email', github: 'dockyard/capybara-email'
+  gem 'capybara-webkit'
   gem 'launchy'
   gem 'webmock'
   gem 'vcr'
   gem 'selenium-webdriver'
-  gem 'database_cleaner', '1.2.0'
+  gem 'database_cleaner'
 end
 
 group :production do

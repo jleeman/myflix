@@ -55,6 +55,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-webkit (1.2.0)
+      capybara (>= 2.0.2, < 2.4.0)
+      json
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -298,9 +301,10 @@ DEPENDENCIES
   bootstrap_form
   capybara
   capybara-email!
+  capybara-webkit
   carrierwave
   coffee-rails
-  database_cleaner (= 1.2.0)
+  database_cleaner
   fabrication
   faker
   figaro
