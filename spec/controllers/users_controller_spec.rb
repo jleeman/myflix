@@ -14,6 +14,7 @@ describe UsersController do
 
     context "with valid input data" do
       before do
+        allow(StripeWrapper::Charge).to receive(:create)
         post :create, user: Fabricate.attributes_for(:user)
       end
 
@@ -68,6 +69,10 @@ describe UsersController do
     end
 
     context "email sending" do
+      before do
+        allow(StripeWrapper::Charge).to receive(:create)
+      end
+
       after { ActionMailer::Base.deliveries.clear }
 
       it "sends out an email to user with valid inputs" do
