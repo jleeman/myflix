@@ -1,7 +1,7 @@
 require "rails_helper.rb"
 
 feature "user invites friend" do
-  scenario "user successfully invites friend and invitation is accepted" do
+  scenario "user successfully invites friend and invitation is accepted", { js: true, vcr: true } do
     joe = Fabricate(:user)
     sign_in(joe)
 
@@ -34,6 +34,9 @@ feature "user invites friend" do
     current_email.click_link "Accept this invitation"
     fill_in "Password", with: "password"
     fill_in "Full Name", with: "Sarah Smith"
+    fill_in "Credit Card Number", with: "4242424242424242"
+    fill_in "Security Code", with: "123"
+    select "2018", from: "date_year"
     click_button "Sign Up"
   end
 
