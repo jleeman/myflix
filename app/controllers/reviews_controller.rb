@@ -1,6 +1,6 @@
 class ReviewsController < ApplicationController
   before_filter :require_user
-  
+
   def create
     @video = Video.find(params[:video_id])
     # create review using strong params and associate with video
@@ -11,6 +11,7 @@ class ReviewsController < ApplicationController
     else
       # reload syntax reloads from DB, invalid review in memory is then ignored
       @reviews = @video.reviews.reload
+      flash[:danger] = "All fields are required."
       render 'videos/show'
     end
   end
