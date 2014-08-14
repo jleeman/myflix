@@ -10,7 +10,6 @@ describe Admin::VideosController do
       let(:action) { get :new }
     end
 
-
     it "sets the @video to new video" do
       set_current_admin
       get :new
