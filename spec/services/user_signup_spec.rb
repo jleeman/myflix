@@ -3,10 +3,10 @@ require 'rails_helper'
 describe UserSignup do
   describe "#sign_up" do
     context "valid personal info and valid credit card" do
-      let(:charge) { double(:charge, successful?: true) }
+      let(:customer) { double(:customer, successful?: true, customer_token: "abc") }
 
       before do
-        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        allow(StripeWrapper::Customer).to receive(:create).and_return(customer)
       end
 
       after { ActionMailer::Base.deliveries.clear }
@@ -14,6 +14,11 @@ describe UserSignup do
       it "creates the user" do
         UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil)
         expect(User.count).to eq(1)
+      end
+
+      it "stores the customer token from stripe" do
+        UserSignup.new(Fabricate.build(:user)).sign_up("some_stripe_token", nil)
+        expect(User.first.customer_token).to eq("abc")
       end
 
       it "makes user follow inviter" do
@@ -53,8 +58,8 @@ describe UserSignup do
 
     context "valid personal info and declined card" do
       it "does not create new user record" do
-        charge = double(:charge, successful?: false, error_message: "Your card was declined.")
-        allow(StripeWrapper::Charge).to receive(:create).and_return(charge)
+        customer = double(:customer, successful?: false, error_message: "Your card was declined.")
+        allow(StripeWrapper::Customer).to receive(:create).and_return(customer)
         UserSignup.new(Fabricate.build(:user)).sign_up("123123", nil)
         expect(User.count).to eq(0)
       end
@@ -67,7 +72,7 @@ describe UserSignup do
       end
 
       it "does not charge the card" do
-        expect(StripeWrapper::Charge).not_to receive(:create)
+        expect(StripeWrapper::Customer).not_to receive(:customer)
         UserSignup.new(User.new(email: "bob@test.com")).sign_up("123123", nil)
       end
 

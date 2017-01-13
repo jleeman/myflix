@@ -55,10 +55,35 @@ describe StripeWrapper do
     describe ".create" do
       it "creates customer with valid card" do
         joe = Fabricate(:user)
-        response = StripeWrapper::Customer.create(user: joe, card: valid_card_token)
+        response = VCR.use_cassette('creates customer with valid card') do
+          StripeWrapper::Customer.create(user: joe, card: valid_card_token)
+        end
+        expect(response).to be_successful
       end
-      it "does not create customer with invalid card"
 
+      it "does not create customer with invalid card" do
+        joe = Fabricate(:user)
+        response = VCR.use_cassette('creates customer with declined card') do
+          StripeWrapper::Customer.create(user: joe, card: declined_card_token)
+        end
+        expect(response).not_to be_successful
+      end
+
+      it "returns error message for declined card" do
+        joe = Fabricate(:user)
+        response = VCR.use_cassette('returns error message for declined card') do
+          StripeWrapper::Customer.create(user: joe, card: declined_card_token)
+        end
+        expect(response.error_message).to eq("Your card was declined.")
+      end
+
+      it "returns the customer token for a valid card" do
+        joe = Fabricate(:user)
+        response = VCR.use_cassette('returns the customer token for a valid card') do
+          StripeWrapper::Customer.create(user: joe, card: valid_card_token)
+        end
+        expect(response.customer_token).to be_present
+      end
     end
   end
 end
